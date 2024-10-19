@@ -21,9 +21,5 @@ public final class Constants {
     public static final class USBOrder {
         public static final int Zero = 0;
         public static final int One = 1;
-        public static final double leftPowerRaw = 0.3;
-        public static final double rightPowerRaw = 0.3;
-        public static final double setTolerance = 5.0;
-        public static final double getMeters = 6;
     }
 }

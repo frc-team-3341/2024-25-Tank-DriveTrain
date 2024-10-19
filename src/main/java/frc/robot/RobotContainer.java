@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.DriveTrain;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,10 +29,12 @@ public class RobotContainer {
 
   private final TankDrive tankDrive = new TankDrive(dt, joy1);
 
-  private final EncoderDrive encoderDrive = new EncoderDrive(dt, 1.0);
+  double setpoint = 5.0;
 
-  private final PIDTurnCCW pidTurnCCW = new PIDTurnCCW(dt,90);
+  private final Autodrive autodrive = new Autodrive(dt, setpoint);
 
+  private final PIDTurn pidTurn = new PIDTurn(dt, 90.0);
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     dt.setDefaultCommand(tankDrive);
@@ -61,14 +62,15 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new SequentialCommandGroup(
-      new EncoderDrive(dt, 1.0),
-      new PIDTurnCCW(dt, 90),
-      new EncoderDrive(dt, 1.0),
-      new PIDTurnCCW(dt, 90),
-      new EncoderDrive(dt, 1.0),
-      new PIDTurnCCW(dt, 90),
-      new EncoderDrive(dt, 1.0)
-      );
+    return autodrive;
+    /*return new SequentialCommandGroup( 
+      new Autodrive(dt, 1.0), 
+      new PIDTurn(dt, 90), 
+      new Autodrive(dt, 1.0),
+      new PIDTurn(dt, 90),
+      new Autodrive(dt, 1.0),
+      new PIDTurn(dt, 90),
+      new Autodrive(dt, 1.0)
+      );*/
   }
 }

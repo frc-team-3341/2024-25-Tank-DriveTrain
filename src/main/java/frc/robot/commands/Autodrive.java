@@ -4,52 +4,51 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrain;
 
-public class EncoderDrive extends Command {
+public class Autodrive extends Command {
   DriveTrain dt;
-  double setPoint;
-  /** Creates a new EncoderDrive. */
-  public EncoderDrive(DriveTrain dt, double setPoint) {  //This is a constructor
+  double setpoint;
+  /** Creates a new Autodrive. */
+  public Autodrive(DriveTrain dt, double setpoint) {
     this.dt = dt;
-    this.setPoint = setPoint;
-    addRequirements (dt);
+    this.setpoint = setpoint;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(dt);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     dt.resetEncoders();
-    dt.tankDrive(0,0);
-  } 
-
+    dt.tankDrive(0.0,0.0);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-  SmartDashboard.putNumber("meters", dt.getMeters());
-  dt.tankDrive(0.3, 0.3);
-  }
+    dt.tankDrive(0.3, 0.3);
+    SmartDashboard.putNumber("Right Talon Ticks", dt.ticksToMeters());
 
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    dt.tankDrive(0,0);
+    dt.resetEncoders();
+    dt.tankDrive(0.0, 0.0);
   }
-  
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(dt.getMeters() >= setPoint) {
+    if (dt.ticksToMeters() >= setpoint) {
       return true;
     }
+  else {
     return false;
+  }
   }
 }
